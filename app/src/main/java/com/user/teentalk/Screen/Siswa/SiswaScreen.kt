@@ -1,4 +1,4 @@
-package com.user.teentalk.Screen
+package com.user.teentalk.Screen.Siswa
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

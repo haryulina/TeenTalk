@@ -170,7 +170,40 @@ fun KuesionerScreen(
                         )
                     )
                 }
-                Spacer(modifier = Modifier)
+
+
+                Button(
+                    onClick = {
+                        navController.navigate(Screen.History.route)
+                    },
+                    shape = RoundedCornerShape(30.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        colorResource(id = R.color.dongker)
+                    ),
+                    modifier = Modifier
+                        .height(75.dp)
+                        .width(300.dp)
+                        .padding(
+                            top = 25.dp,
+                            start = 20.dp,
+                            end = 20.dp
+                        )
+                        .clickable {
+                            navController.navigate(Screen.KuesionerList.route)
+                        },
+
+                    ) {
+                    Text(text = "Lihat Riwayat",
+                        Modifier.shadow(10.dp),
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            fontFamily = PoppinsFontFamily,
+                            fontWeight = FontWeight(500),
+                            color = Color.White
+                        )
+                    )
+                }
+
             }
 
         }

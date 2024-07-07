@@ -15,25 +15,28 @@ import com.user.teentalk.Screen.Chat.ChatSiswaScreen
 import com.user.teentalk.Screen.Dashboard.DashboardScreen
 import com.user.teentalk.Screen.Educate.DetailScreen
 import com.user.teentalk.Screen.Educate.EducateListScreen
+import com.user.teentalk.Screen.History.HistoryScreen
 import com.user.teentalk.Screen.Konselor.KonselorScreen
 import com.user.teentalk.Screen.Kuisioner.KuesionerListScreen
 import com.user.teentalk.Screen.Kuisioner.KuesionerScreen
 import com.user.teentalk.Screen.Login.LoginScreen
 import com.user.teentalk.Screen.Profile.ProfileScreen
-import com.user.teentalk.Screen.ResultScreen
+import com.user.teentalk.Screen.Result.ResultScreen
 import com.user.teentalk.Screen.Signup.SignupScreen
-import com.user.teentalk.Screen.SiswaScreen
+import com.user.teentalk.Screen.Siswa.SiswaScreen
 import com.user.teentalk.Screen.Splash.SplashScreen
 import com.user.teentalk.Screen.Welcome.WelcomeScreen
 import com.user.teentalk.ViewModel.DashboardViewModel
 import com.user.teentalk.ViewModel.KuesionerViewModel
+import com.user.teentalk.ViewModel.ResultViewModel
 
 
 @Composable
 fun TeenTalkApp(
     navController: NavHostController = rememberNavController(),
     dashboardViewModel: DashboardViewModel = viewModel(),
-    kuesionerViewModel: KuesionerViewModel = viewModel()
+    kuesionerViewModel: KuesionerViewModel = viewModel(),
+    resultViewModel: ResultViewModel = viewModel()
 ) {
     LaunchedEffect(key1 = true) {
         dashboardViewModel.checkForActiveSession()
@@ -135,7 +138,11 @@ fun TeenTalkApp(
             )
         }
         composable(Screen.Result.route) {
-            ResultScreen(viewModel = kuesionerViewModel)
+            ResultScreen(viewModel = kuesionerViewModel, resultViewModel = resultViewModel)
+        }
+
+        composable(Screen.History.route){
+            HistoryScreen(resultViewModel = resultViewModel)
         }
     }
 }

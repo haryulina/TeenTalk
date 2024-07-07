@@ -22,4 +22,5 @@ sealed class Screen(val route: String) {
         fun createRoute(educateId: Int) = "dashboard_screen/$educateId"
     }
     object Result : Screen("result_screen")
+    object History: Screen("history_screen")
 }
