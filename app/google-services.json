@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "296994936842",
+    "project_id": "teentalkproject-5aa0a",
+    "storage_bucket": "teentalkproject-5aa0a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296994936842:android:a6d44006ed02cf5c6967f3",
+        "android_client_info": {
+          "package_name": "com.user.teentalk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhb3qCWmO1qmCwiqKSph1zsmdj7EAjzek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

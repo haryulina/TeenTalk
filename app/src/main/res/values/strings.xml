@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TeenTalk</string>
+    <string name="empty_data">Data kosong</string>
+    <string name="cari_karakter">Cari Artikel..</string>
+</resources>

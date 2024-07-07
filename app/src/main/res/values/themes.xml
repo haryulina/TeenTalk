@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.TeenTalk" parent="android:Theme.Material.Light.NoActionBar" >
+        <item name="android:statusBarColor">@color/dongker</item>
+    </style>
+
+    <style name="Theme.SplashScreenTeenTalk" parent="android:Theme.Material.Light.NoActionBar">-->
+        <item name="windowSplashScreenBackground">@color/dongker</item>-->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>-->
+        <item name="postSplashScreenTheme">@style/Theme.TeenTalk</item>-->
+        <item name="android:statusBarColor">@color/dongker</item>
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+
+    </style>-->
+
+</resources>
