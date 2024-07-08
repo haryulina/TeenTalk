@@ -189,7 +189,7 @@ fun KuesionerScreen(
                             end = 20.dp
                         )
                         .clickable {
-                            navController.navigate(Screen.KuesionerList.route)
+                            navController.navigate(Screen.History.route)
                         },
 
                     ) {

@@ -44,7 +44,9 @@ class DashboardViewModel : ViewModel() {
                 .document(user.uid)
                 .get()
                 .addOnSuccessListener { document ->
-                    _userRole.value = document.getString("role")
+                    val role = document.getString("role")
+                    Log.d("DashboardViewModel", "User role: $role")
+                    _userRole.value = role
                 }
         }
     }

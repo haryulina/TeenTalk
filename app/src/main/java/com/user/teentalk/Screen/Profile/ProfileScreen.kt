@@ -2,6 +2,7 @@ package com.user.teentalk.Screen.Profile
 
 import android.Manifest
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -9,10 +10,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,6 +46,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.user.teentalk.Components.BtnChangePhotoProfile
 import com.user.teentalk.Components.BtnLogout
 import com.user.teentalk.R
+import com.user.teentalk.ViewModel.DashboardViewModel
 import com.user.teentalk.ViewModel.ProfileViewModel
 import com.user.teentalk.ui.theme.PoppinsFontFamily
 
@@ -51,12 +56,15 @@ fun ProfileScreen(
     onBackClicked: () -> Unit,
     onLogoutClicked: () -> Unit,
     onChangePhotoClicked: () -> Unit,
-    viewModel: ProfileViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    onIsiBiodataClicked: () -> Unit,
+    profileViewModel: ProfileViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    dashboardViewModel: DashboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel() // Add DashboardViewModel
 ) {
-    val userProfile by viewModel.userProfile.collectAsState()
-    val profileImageUrl by viewModel.profileImageUrl.collectAsState()
+    val userProfile by profileViewModel.userProfile.collectAsState()
+    val profileImageUrl by profileViewModel.profileImageUrl.collectAsState()
     val selectedImage = remember { mutableStateOf<Bitmap?>(null) }
-    val email by viewModel.email.collectAsState("user@example.com")
+    val email by profileViewModel.email.collectAsState("user@example.com")
+    val userRole by dashboardViewModel.userRole.collectAsState()
 
     // Check and request camera and storage permissions
     val cameraPermissionState = rememberMultiplePermissionsState(
@@ -65,6 +73,10 @@ fun ProfileScreen(
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
     )
+
+    LaunchedEffect(userRole) {
+        Log.d("ProfileScreen", "User role: $userRole")
+    }
 
     LaunchedEffect(Unit) {
         cameraPermissionState.launchMultiplePermissionRequest()
@@ -146,13 +158,26 @@ fun ProfileScreen(
 
                 BtnChangePhotoProfile(onImagePicked = {
                     selectedImage.value = it
-                    it?.let { viewModel.uploadProfileImage(it) }
+                    it?.let { profileViewModel.uploadProfileImage(it) }
                 })
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                // Show "Isi Biodata" button only for users with role "konselor"
+                if (userRole == "Konselor") {
+                    Button(
+                        onClick = onIsiBiodataClicked,
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        colors = ButtonDefaults.buttonColors(colorResource(id = R.color.dongker)),
+                    ) {
+                        Text("Isi Biodata")
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
                 BtnLogout(onLogoutClicked = {
-                    viewModel.logout()
+                    profileViewModel.logout()
                     onLogoutClicked()
                 })
             }

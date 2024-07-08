@@ -180,7 +180,7 @@ fun DashboardScreen(
                             if (userRole == "Konselor") {
                                 navController.navigate(Screen.ChatSiswaScreen.route)
                             } else {
-                                navController.navigate(Screen.KonselorScreen.route)
+                                navController.navigate(Screen.Chat_History.route)
                             }
                         }
                 ) {
@@ -340,46 +340,6 @@ fun educateListItem(
                         }
                 )
             }
-        }
-    }
-}
-
-@Composable
-fun EducateItem(
-    id: Int,
-    judul: String,
-    imageUrl: String,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .width(170.dp)
-            .height(170.dp)
-            .background(
-                color = colorResource(id = R.color.dongker),
-                shape = RoundedCornerShape(20.dp)
-            )
-            .padding(16.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Image(
-                painter = rememberAsyncImagePainter(imageUrl),
-                contentDescription = null,
-                modifier = Modifier
-                    .height(100.dp)
-                    .fillMaxWidth()
-            )
-            Text(
-                text = judul,
-                color = Color.White,
-                fontSize = 14.sp,
-                fontFamily = PoppinsFontFamily,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-            )
         }
     }
 }

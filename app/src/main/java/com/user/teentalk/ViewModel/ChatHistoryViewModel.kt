@@ -1,18 +1,16 @@
 package com.user.teentalk.ViewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.user.teentalk.Data.Model.Chat
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-class ChatSiswaViewModel : ViewModel() {
+class ChatHistoryViewModel : ViewModel() {
     private val firestore = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
@@ -67,5 +65,3 @@ class ChatSiswaViewModel : ViewModel() {
         }
     }
 }
-
-

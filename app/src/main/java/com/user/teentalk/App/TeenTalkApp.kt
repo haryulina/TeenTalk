@@ -16,6 +16,7 @@ import com.user.teentalk.Screen.Dashboard.DashboardScreen
 import com.user.teentalk.Screen.Educate.DetailScreen
 import com.user.teentalk.Screen.Educate.EducateListScreen
 import com.user.teentalk.Screen.History.HistoryScreen
+import com.user.teentalk.Screen.IsiBiodata.IsiBiodataScreen
 import com.user.teentalk.Screen.Konselor.KonselorScreen
 import com.user.teentalk.Screen.Kuisioner.KuesionerListScreen
 import com.user.teentalk.Screen.Kuisioner.KuesionerScreen
@@ -26,6 +27,8 @@ import com.user.teentalk.Screen.Signup.SignupScreen
 import com.user.teentalk.Screen.Siswa.SiswaScreen
 import com.user.teentalk.Screen.Splash.SplashScreen
 import com.user.teentalk.Screen.Welcome.WelcomeScreen
+import com.user.teentalk.Screen.chatHistory.ChatHistoryScreen
+import com.user.teentalk.Screen.detailKonselor.DetailKonselorScreen
 import com.user.teentalk.ViewModel.DashboardViewModel
 import com.user.teentalk.ViewModel.KuesionerViewModel
 import com.user.teentalk.ViewModel.ResultViewModel
@@ -95,7 +98,9 @@ fun TeenTalkApp(
                         popUpTo(Screen.Dashboard.route) { inclusive = true }
                     }
                 },
-                onChangePhotoClicked = { /* Handle change photo action */ }
+                onChangePhotoClicked = { /* Handle change photo action */ },
+                onIsiBiodataClicked = {navController.navigate(Screen.Biodata.route)}
+
             )
         }
         composable(Screen.KonselorScreen.route) {
@@ -123,14 +128,15 @@ fun TeenTalkApp(
             )
         }
         composable(
-            route = Screen.Chat.route + "/{otherUserEmail}",
-            arguments = listOf(navArgument("otherUserEmail") { type = NavType.StringType })
+            route = Screen.Chat.route + "/{otherUserID}",
+            arguments = listOf(navArgument("otherUserID") { type = NavType.StringType })
         ) {
-            val otherUserEmail = it.arguments?.getString("otherUserEmail") ?: ""
+            val otherUserID = it.arguments?.getString("otherUserID") ?: ""
             ChatScreen(
-                otherUserEmail = otherUserEmail
+                otherUserID = otherUserID
             )
         }
+
         composable(Screen.SiswaScreen.route) {
             SiswaScreen(
                 onBackClicked = { navController.popBackStack() },
@@ -138,11 +144,28 @@ fun TeenTalkApp(
             )
         }
         composable(Screen.Result.route) {
-            ResultScreen(viewModel = kuesionerViewModel, resultViewModel = resultViewModel)
+            ResultScreen(viewModel = kuesionerViewModel, resultViewModel = resultViewModel, navController = navController)
         }
 
         composable(Screen.History.route){
             HistoryScreen(resultViewModel = resultViewModel)
+        }
+        composable(Screen.Biodata.route){
+            IsiBiodataScreen(onBackClicked = { navController.popBackStack() })
+        }
+        composable("detail_konselor") {
+            KonselorScreen(onBackClicked = { navController.popBackStack() }, navController = navController)
+        }
+        composable("detail_konselor/{counselorId}") { backStackEntry ->
+            val counselorId = backStackEntry.arguments?.getString("counselorId") ?: return@composable
+            DetailKonselorScreen(
+                counselorId = counselorId,
+                onBackClicked = { navController.popBackStack() },
+                navController= navController
+            )
+        }
+        composable(Screen.Chat_History.route){
+            ChatHistoryScreen(navController = navController,onBackClicked = { navController.popBackStack() },)
         }
     }
 }

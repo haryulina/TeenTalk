@@ -9,8 +9,8 @@ sealed class Screen(val route: String) {
     object Profile : Screen ("profile_screen")
     object ChatSiswaScreen : Screen("chat_siswa_screen")
     object Chat : Screen("chat_screen") {
-        fun createRoute(otherUserEmail: String): String {
-            return "chat_screen/$otherUserEmail"
+        fun createRoute(otherUserID: String): String {
+            return "chat_screen/$otherUserID"
         }
     }
     object Kuesioner : Screen ("kuesioner_screen")
@@ -23,4 +23,7 @@ sealed class Screen(val route: String) {
     }
     object Result : Screen("result_screen")
     object History: Screen("history_screen")
+    object Biodata: Screen("isi_biodata_screen")
+    object Detail_Konselor : Screen("detail_konselor")
+    object Chat_History : Screen("chat_history_screen")
 }

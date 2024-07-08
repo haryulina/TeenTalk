@@ -77,18 +77,19 @@ fun HistoryCard(date: String, results: List<ResultData>) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(
-                text = "Date: $date",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
 
             results.forEach { result ->
                 HistoryItem(result)
                 Spacer(modifier = Modifier.height(8.dp))
             }
+
+            Text(
+                text = "Tanggal: $date",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Black,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
         }
     }
 }

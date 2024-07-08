@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -129,6 +130,7 @@ fun DetailInfo(
             ){
                 Text(
                     text = content,
+                    textAlign = TextAlign.Justify,
                     modifier = Modifier.padding(start = 2.dp, end = 8.dp),
                     color = Color.Black
                 )
