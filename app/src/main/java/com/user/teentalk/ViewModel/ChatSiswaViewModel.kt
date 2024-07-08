@@ -28,7 +28,6 @@ class ChatSiswaViewModel : ViewModel() {
             try {
                 val currentUserEmail = auth.currentUser?.email ?: return@launch
 
-                // Query to get all chats where the current user is a participant
                 val querySnapshot = firestore.collection("chats")
                     .whereArrayContains("participants", currentUserEmail)
                     .get()
@@ -39,23 +38,16 @@ class ChatSiswaViewModel : ViewModel() {
                     val lastMessage = document.getString("lastMessage") ?: ""
                     val participants = document.get("participants") as List<String>
 
-                    val participantIDs = mutableListOf<String>()
-                    val participantNames = mutableListOf<String>()
-
-                    participants.forEach { email ->
-                        val userDoc = firestore.collection("users").whereEqualTo("email", email).get().await().documents.firstOrNull()
-                        val userId = userDoc?.id ?: ""
-                        val userName = userDoc?.getString("name") ?: email
-
-                        participantIDs.add(userId)
-                        participantNames.add(userName)
+                    // Ambil nama peserta
+                    val participantNames = participants.map { email ->
+                        firestore.collection("users").document(email).get().await()
+                            .getString("name") ?: email
                     }
 
                     Chat(
                         id = chatId,
                         participants = participants,
                         participantNames = participantNames,
-                        participantIDs = participantIDs,
                         lastMessage = lastMessage
                     )
                 }

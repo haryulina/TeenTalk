@@ -89,12 +89,10 @@ fun ChatHistoryScreen(
     }
 }
 
-
 @Composable
 fun ChatHistoryItem(chat: Chat, onChatClicked: (String) -> Unit) {
     val currentUserEmail = FirebaseAuth.getInstance().currentUser?.email
     val participantIndex = chat.participants.indexOfFirst { it != currentUserEmail }
-    val participantID = chat.participantIDs.getOrNull(participantIndex) ?: "Unknown"
     val participantName = chat.participantNames.getOrNull(participantIndex) ?: "Unknown"
 
     Card(
@@ -107,7 +105,7 @@ fun ChatHistoryItem(chat: Chat, onChatClicked: (String) -> Unit) {
                 shape = RoundedCornerShape(20.dp)
             )
             .clickable {
-                onChatClicked(participantID)
+                onChatClicked(chat.participants[participantIndex])
             }
     ) {
         Column(
@@ -129,3 +127,4 @@ fun ChatHistoryItem(chat: Chat, onChatClicked: (String) -> Unit) {
         }
     }
 }
+

@@ -128,12 +128,12 @@ fun TeenTalkApp(
             )
         }
         composable(
-            route = Screen.Chat.route + "/{otherUserID}",
-            arguments = listOf(navArgument("otherUserID") { type = NavType.StringType })
+            route = Screen.Chat.route + "/{otherUserEmail}",
+            arguments = listOf(navArgument("otherUserEmail") { type = NavType.StringType })
         ) {
-            val otherUserID = it.arguments?.getString("otherUserID") ?: ""
+            val otherUserEmail = it.arguments?.getString("otherUserEmail") ?: ""
             ChatScreen(
-                otherUserID = otherUserID
+                otherUserEmail = otherUserEmail
             )
         }
 

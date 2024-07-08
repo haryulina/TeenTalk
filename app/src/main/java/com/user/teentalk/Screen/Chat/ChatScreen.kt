@@ -38,31 +38,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.user.teentalk.Data.Model.Message
 import com.user.teentalk.ViewModel.ChatScreenViewModel
-import kotlinx.coroutines.tasks.await
 
 
 @Composable
 fun ChatScreen(
     chatScreenViewModel: ChatScreenViewModel = viewModel(),
-    otherUserID: String
+    otherUserEmail: String
 ) {
     var messageText by remember { mutableStateOf("") }
 
-    val firestore = FirebaseFirestore.getInstance()
-    var otherUserName by remember { mutableStateOf("Loading...") }
-
-    LaunchedEffect(otherUserID) {
-        try {
-            val documentSnapshot = firestore.collection("users").document(otherUserID).get().await()
-            val name = documentSnapshot.getString("name") ?: "Unknown"
-            otherUserName = name
-        } catch (e: Exception) {
-            Log.e("ChatScreen", "Error fetching user name", e)
-        }
+    LaunchedEffect(otherUserEmail) {
+        chatScreenViewModel.initializeChat(otherUserEmail)
     }
+
     val messages by chatScreenViewModel.messages.collectAsState()
 
     Column(Modifier.fillMaxSize()) {
@@ -76,7 +66,7 @@ fun ChatScreen(
                     sender = FirebaseAuth.getInstance().currentUser?.email ?: "unknown",
                     text = text
                 )
-                chatScreenViewModel.sendMessage(message, otherUserID)
+                chatScreenViewModel.sendMessage(message, otherUserEmail)
                 messageText = ""
             }
         )

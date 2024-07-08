@@ -9,10 +9,12 @@ sealed class Screen(val route: String) {
     object Profile : Screen ("profile_screen")
     object ChatSiswaScreen : Screen("chat_siswa_screen")
     object Chat : Screen("chat_screen") {
-        fun createRoute(otherUserID: String): String {
-            return "chat_screen/$otherUserID"
+        fun createRoute(otherUserEmail: String): String {
+            return "chat_screen/$otherUserEmail"
         }
     }
+
+
     object Kuesioner : Screen ("kuesioner_screen")
     object KuesionerList : Screen ("kuesionerlist_screen")
     object EducateListScreen : Screen("educate_screen")
