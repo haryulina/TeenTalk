@@ -64,6 +64,7 @@ fun HistoryScreen(resultViewModel: ResultViewModel) {
     }
 }
 
+
 @Composable
 fun HistoryCard(date: String, results: List<ResultData>) {
     Card(
@@ -77,7 +78,6 @@ fun HistoryCard(date: String, results: List<ResultData>) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-
             results.forEach { result ->
                 HistoryItem(result)
                 Spacer(modifier = Modifier.height(8.dp))
@@ -93,6 +93,7 @@ fun HistoryCard(date: String, results: List<ResultData>) {
         }
     }
 }
+
 
 @Composable
 fun HistoryItem(result: ResultData) {
@@ -119,4 +120,5 @@ fun HistoryItem(result: ResultData) {
         )
     }
 }
+
 
