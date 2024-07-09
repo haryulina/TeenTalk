@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -45,6 +46,7 @@ fun KuesionerListScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
+
         Text(
             text = "Kuesioner",
             fontSize = 24.sp,
@@ -53,9 +55,37 @@ fun KuesionerListScreen(
         )
 
         LazyColumn(
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
+            item {
+                Card(
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Text(
+                            text = "Petunjuk Pengisian \n" + "\n" + "Kuesioner ini terdiri dari berbagai pernyataan yang mungkin sesuai dengan pengalaman Saudara dalam menghadapi situasi hidup sehari- hari. Terdapat empat pilihan jawaban yang disediakan untuk setiap pernyataan yaitu:\n" +
+                                    "\n" +
+                                    "0\t: Tidak sesuai dengan saya sama sekali, atau tidak pernah.\n" +
+                                    "1\t: Sesuai dengan saya sampai tingkat tertentu, atau kadang-kadang.\n" +
+                                    "2\t: Sesuai dengan saya sampai batas yang dapat dipertimbangkan, atau lumayan sering.\n" +
+                                    "3\t: Sangat sesuai dengan saya, atau sering sekali.\n" +
+                                    "\n" +
+                                    "\n" +
+                                    "Selanjutnya, Saudara diminta untuk menjawab dengan cara memilih salah satu point pada salah satu kolom yang paling sesuai dengan pengalaman Saudara selama satu minggu belakangan ini. Tidak ada jawaban yang benar ataupun salah, karena itu isilah sesuai dengan keadaan diri Saudara yang sesungguhnya, yaitu berdasarkan jawaban pertama yang terlintas dalam pikiran Saudara.\n",
+                            textAlign = TextAlign.Center,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight(500),
+                        )
+                    }
+                }
+            }
+
             items(questions) { question ->
                 QuestionItem(question = question) { answer ->
                     viewModel.updateAnswer(question.id, answer)
@@ -89,10 +119,11 @@ fun QuestionItem(question: Question, onAnswerSelected: (Int) -> Unit) {
         ) {
             Text(
                 text = question.text,
+                textAlign = TextAlign.Center,
+                fontFamily = PoppinsFontFamily,
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                fontFamily = PoppinsFontFamily
+                fontWeight = FontWeight(600),
+                color = Color.Black
             )
             Spacer(
                 modifier = Modifier

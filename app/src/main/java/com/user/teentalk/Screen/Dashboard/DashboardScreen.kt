@@ -204,7 +204,7 @@ fun DashboardScreen(
                                     .padding(end = 8.dp)
                             )
                             Text(
-                                text = if (userRole == "Konselor") "Chat Siswa" else "Chat Terapis",
+                                text = if (userRole == "Konselor") "Chat Siswa" else "Chat Konselor",
                                 color = Color.White,
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold
@@ -263,7 +263,7 @@ fun DashboardScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = if (userRole == "Konselor") "Daftar Siswa" else "Daftar Terapis",
+                        text = if (userRole == "Konselor") "Daftar Siswa" else "Daftar Konselor",
                         color = Color.White,
                         fontSize = 16.sp,
                         fontFamily = PoppinsFontFamily,

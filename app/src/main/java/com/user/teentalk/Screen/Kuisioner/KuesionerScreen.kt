@@ -33,6 +33,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -84,7 +85,7 @@ fun KuesionerScreen(
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .height(400.dp)
+                    .height(500.dp)
                     .background(
                         colorResource(id = R.color.dongker),
 
@@ -103,31 +104,34 @@ fun KuesionerScreen(
                 ) {
                     Spacer(modifier = Modifier.weight(1f))
                     Image(
-                        painter = painterResource(id = R.drawable.logoo),
+                        painter = painterResource(id = R.drawable.kuesioner_bg),
                         contentDescription = null,
                         modifier = Modifier
-                            .width(100.dp)
-                            .height(100.dp),
+                            .width(600.dp)
+                            .height(200.dp),
                         contentScale = ContentScale.Fit
                     )
                     Spacer(modifier = Modifier.weight(0.2f))
                     Text(
-                        text = "Title",
-                        fontSize = 28.sp,
+                        text = "Pengisian Kuesioner DASS",
+                        fontSize = 25.sp,
+                        textAlign = TextAlign.Center,
                         fontFamily = PoppinsFontFamily,
                         fontWeight = FontWeight(700),
                         color = Color.White
                     )
-                    Spacer(modifier = Modifier.padding(top = 1.dp, bottom = 8.dp))
+                    Spacer(modifier = Modifier.weight(0.2f))
+
                     Text(
-                        text = "deskripsi",
+                        text =  "Depression Anxienty Stress Scale",
+                        fontSize = 18.sp,
                         textAlign = TextAlign.Center,
                         fontFamily = PoppinsFontFamily,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight(300),
+                        fontStyle = FontStyle.Italic,
+                        fontWeight = FontWeight(500),
                         color = Color.White
                     )
-                    Spacer(modifier = Modifier.weight(1f))
+                    Spacer(modifier = Modifier.weight(0.5f))
                 }
             }
             Column(
