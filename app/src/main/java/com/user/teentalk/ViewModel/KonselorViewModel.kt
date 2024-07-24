@@ -33,7 +33,8 @@ class KonselorViewModel : ViewModel(){
                         id = document.id,
                         name = document.getString("name") ?: "",
                         email = document.getString("email")?:"",
-                        role = document.getString("role") ?: ""
+                        role = document.getString("role") ?: "",
+                        profileImageUrl = document.getString("profileImageUrl")
                     )
                 }
 

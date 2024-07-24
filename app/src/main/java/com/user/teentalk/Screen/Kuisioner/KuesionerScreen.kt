@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -76,140 +77,144 @@ fun KuesionerScreen(
             )
         }
     ) { innerPadding ->
-        Column(
+        LazyColumn(
             Modifier
                 .padding(innerPadding)
                 .fillMaxWidth()
                 .padding(bottom = 16.dp) // Ensure some space below the Box
         ) {
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(500.dp)
-                    .background(
-                        colorResource(id = R.color.dongker),
+            item {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(500.dp)
+                        .background(
+                            colorResource(id = R.color.dongker),
 
-                        shape = RoundedCornerShape(
-                            bottomEnd = 25.dp,
-                            bottomStart = 25.dp
+                            shape = RoundedCornerShape(
+                                bottomEnd = 25.dp,
+                                bottomStart = 25.dp
+                            )
                         )
-                    )
-            ) {
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 24.dp)
+                    ) {
+                        Spacer(modifier = Modifier.weight(1f))
+                        Image(
+                            painter = painterResource(id = R.drawable.kuesioner_bg),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .width(600.dp)
+                                .height(200.dp),
+                            contentScale = ContentScale.Fit
+                        )
+                        Spacer(modifier = Modifier.weight(0.2f))
+                        Text(
+                            text = "Pengisian Kuesioner DASS",
+                            fontSize = 25.sp,
+                            textAlign = TextAlign.Center,
+                            fontFamily = PoppinsFontFamily,
+                            fontWeight = FontWeight(700),
+                            color = Color.White
+                        )
+                        Spacer(modifier = Modifier.weight(0.2f))
+
+                        Text(
+                            text =  "Depression Anxienty Stress Scale",
+                            fontSize = 18.sp,
+                            textAlign = TextAlign.Center,
+                            fontFamily = PoppinsFontFamily,
+                            fontStyle = FontStyle.Italic,
+                            fontWeight = FontWeight(500),
+                            color = Color.White
+                        )
+                        Spacer(modifier = Modifier.weight(0.5f))
+                    }
+                }
+            }
+
+            item {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 24.dp)
-                ) {
-                    Spacer(modifier = Modifier.weight(1f))
-                    Image(
-                        painter = painterResource(id = R.drawable.kuesioner_bg),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .width(600.dp)
-                            .height(200.dp),
-                        contentScale = ContentScale.Fit
-                    )
-                    Spacer(modifier = Modifier.weight(0.2f))
-                    Text(
-                        text = "Pengisian Kuesioner DASS",
-                        fontSize = 25.sp,
-                        textAlign = TextAlign.Center,
-                        fontFamily = PoppinsFontFamily,
-                        fontWeight = FontWeight(700),
-                        color = Color.White
-                    )
-                    Spacer(modifier = Modifier.weight(0.2f))
+                        .fillMaxWidth()
+                        .padding(25.dp)
 
-                    Text(
-                        text =  "Depression Anxienty Stress Scale",
-                        fontSize = 18.sp,
-                        textAlign = TextAlign.Center,
-                        fontFamily = PoppinsFontFamily,
-                        fontStyle = FontStyle.Italic,
-                        fontWeight = FontWeight(500),
-                        color = Color.White
-                    )
-                    Spacer(modifier = Modifier.weight(0.5f))
-                }
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(25.dp)
-
-            )
-            {
-                Button(
-                    onClick = {
-                        navController.navigate("kuesionerlist_screen")
-                    },
-                    shape = RoundedCornerShape(30.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        colorResource(id = R.color.dongker)
-                    ),
-                    modifier = Modifier
-                        .height(75.dp)
-                        .width(300.dp)
-                        .padding(
-                            top = 25.dp,
-                            start = 20.dp,
-                            end = 20.dp
-                        )
-                        .clickable {
-                            navController.navigate(Screen.KuesionerList.route)
+                )
+                {
+                    Button(
+                        onClick = {
+                            navController.navigate("kuesionerlist_screen")
                         },
+                        shape = RoundedCornerShape(30.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            colorResource(id = R.color.dongker)
+                        ),
+                        modifier = Modifier
+                            .height(75.dp)
+                            .width(300.dp)
+                            .padding(
+                                top = 25.dp,
+                                start = 20.dp,
+                                end = 20.dp
+                            )
+                            .clickable {
+                                navController.navigate(Screen.KuesionerList.route)
+                            },
 
-                    ) {
-                    Text(text = "Mulai Sekarang",
-                        Modifier.shadow(10.dp),
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            fontFamily = PoppinsFontFamily,
-                            fontWeight = FontWeight(500),
-                            color = Color.White
+                        ) {
+                        Text(text = "Mulai Sekarang",
+                            Modifier.shadow(10.dp),
+                            style = TextStyle(
+                                fontSize = 18.sp,
+                                fontFamily = PoppinsFontFamily,
+                                fontWeight = FontWeight(500),
+                                color = Color.White
+                            )
                         )
-                    )
-                }
+                    }
 
 
-                Button(
-                    onClick = {
-                        navController.navigate(Screen.History.route)
-                    },
-                    shape = RoundedCornerShape(30.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        colorResource(id = R.color.dongker)
-                    ),
-                    modifier = Modifier
-                        .height(75.dp)
-                        .width(300.dp)
-                        .padding(
-                            top = 25.dp,
-                            start = 20.dp,
-                            end = 20.dp
-                        )
-                        .clickable {
+                    Button(
+                        onClick = {
                             navController.navigate(Screen.History.route)
                         },
+                        shape = RoundedCornerShape(30.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            colorResource(id = R.color.dongker)
+                        ),
+                        modifier = Modifier
+                            .height(75.dp)
+                            .width(300.dp)
+                            .padding(
+                                top = 25.dp,
+                                start = 20.dp,
+                                end = 20.dp
+                            )
+                            .clickable {
+                                navController.navigate(Screen.History.route)
+                            },
 
-                    ) {
-                    Text(text = "Lihat Riwayat",
-                        Modifier.shadow(10.dp),
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            fontFamily = PoppinsFontFamily,
-                            fontWeight = FontWeight(500),
-                            color = Color.White
+                        ) {
+                        Text(text = "Lihat Riwayat",
+                            Modifier.shadow(10.dp),
+                            style = TextStyle(
+                                fontSize = 18.sp,
+                                fontFamily = PoppinsFontFamily,
+                                fontWeight = FontWeight(500),
+                                color = Color.White
+                            )
                         )
-                    )
+                    }
+
                 }
-
             }
-
         }
     }
 }

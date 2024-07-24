@@ -67,15 +67,18 @@ class KuesionerViewModel : ViewModel() {
     }
 
     fun calculateScores() {
+        val answeredQuestions = _questions.value.filter { it.answer != -1 }
+        if (answeredQuestions.size < 42) {
+            throw IllegalArgumentException("Jumlah jawaban harus 42")
+        }
         val scores = mutableMapOf<Category, Int>().withDefault { 0 }
-        _questions.value.forEach { question ->
-            if (question.answer != -1) {
-                scores[question.category] = scores.getValue(question.category) + question.answer
-            }
+        answeredQuestions.forEach { question ->
+            scores[question.category] = scores.getValue(question.category) + question.answer
         }
         _scores.value = scores
         Log.d("KuesionerViewModel", "Scores calculated: $scores")
     }
+
 
     fun getResultCategory(scores: Map<Category, Int>): Map<Category, String> {
         val results = scores.mapValues { (category, score) ->
@@ -105,5 +108,11 @@ class KuesionerViewModel : ViewModel() {
         }
         Log.d("KuesionerViewModel", "Results calculated: $results")
         return results
+    }
+
+    fun resetAnswers() {
+        _questions.value = _questions.value.map {
+            it.copy(answer = -1) // Mengatur ulang jawaban ke -1
+        }
     }
 }

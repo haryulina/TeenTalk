@@ -1,5 +1,8 @@
 package com.user.teentalk.Screen.Kuisioner
 
+import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,9 +23,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,13 +47,14 @@ fun KuesionerListScreen(
     viewModel: KuesionerViewModel
 ) {
     val questions by viewModel.questions.collectAsState()
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-
         Text(
             text = "Kuesioner",
             fontSize = 24.sp,
@@ -68,18 +76,28 @@ fun KuesionerListScreen(
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Text(
-                            text = "Petunjuk Pengisian \n" + "\n" + "Kuesioner ini terdiri dari berbagai pernyataan yang mungkin sesuai dengan pengalaman Saudara dalam menghadapi situasi hidup sehari- hari. Terdapat empat pilihan jawaban yang disediakan untuk setiap pernyataan yaitu:\n" +
-                                    "\n" +
-                                    "0\t: Tidak sesuai dengan saya sama sekali, atau tidak pernah.\n" +
-                                    "1\t: Sesuai dengan saya sampai tingkat tertentu, atau kadang-kadang.\n" +
-                                    "2\t: Sesuai dengan saya sampai batas yang dapat dipertimbangkan, atau lumayan sering.\n" +
-                                    "3\t: Sangat sesuai dengan saya, atau sering sekali.\n" +
-                                    "\n" +
-                                    "\n" +
-                                    "Selanjutnya, Saudara diminta untuk menjawab dengan cara memilih salah satu point pada salah satu kolom yang paling sesuai dengan pengalaman Saudara selama satu minggu belakangan ini. Tidak ada jawaban yang benar ataupun salah, karena itu isilah sesuai dengan keadaan diri Saudara yang sesungguhnya, yaitu berdasarkan jawaban pertama yang terlintas dalam pikiran Saudara.\n",
-                            textAlign = TextAlign.Center,
+                            text = "Petunjuk Pengisian",
+                            textAlign = TextAlign.Justify,
                             fontFamily = PoppinsFontFamily,
-                            fontSize = 18.sp,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight(700),
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Kuesioner ini terdiri dari berbagai pernyataan yang mungkin sesuai dengan pengalaman Saudara dalam menghadapi situasi hidup sehari-hari. Terdapat empat pilihan jawaban yang disediakan untuk setiap pernyataan yaitu:",
+                            textAlign = TextAlign.Justify,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight(500),
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        LikertScaleTable()
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Selanjutnya, Saudara diminta untuk menjawab dengan cara memilih salah satu point pada salah satu kolom yang paling sesuai dengan pengalaman Saudara selama satu minggu belakangan ini. Tidak ada jawaban yang benar ataupun salah, karena itu isilah sesuai dengan keadaan diri Saudara yang sesungguhnya, yaitu berdasarkan jawaban pertama yang terlintas dalam pikiran Saudara.",
+                            textAlign = TextAlign.Justify,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = 16.sp,
                             fontWeight = FontWeight(500),
                         )
                     }
@@ -94,10 +112,18 @@ fun KuesionerListScreen(
 
             item {
                 Spacer(modifier = Modifier.height(16.dp))
+
                 Button(
                     onClick = {
-                        viewModel.calculateScores()
-                        navController.navigate(Screen.Result.route)
+                        val allQuestionsAnswered = questions.all { it.answer != -1 }
+                        if (allQuestionsAnswered) {
+                            viewModel.calculateScores()
+                            viewModel.resetAnswers()
+                            navController.navigate(Screen.Result.route)
+                        } else {
+                            errorMessage = "Jawaban harus di isi semua atau tidak boleh kosong"
+                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                        }
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 ) {
@@ -105,6 +131,45 @@ fun KuesionerListScreen(
                 }
             }
         }
+    }
+}
+@Composable
+fun LikertScaleTable() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(1.dp, Color.Black)
+    ) {
+        TableRow("0", "Tidak sesuai dengan saya sama sekali, atau tidak pernah.", Color(0xFFF0F0F0))
+        TableRow("1", "Sesuai dengan saya sampai tingkat tertentu, atau kadang-kadang.", Color.White)
+        TableRow("2", "Sesuai dengan saya sampai batas yang dapat dipertimbangkan, atau lumayan sering.", Color(0xFFF0F0F0))
+        TableRow("3", "Sangat sesuai dengan saya, atau sering sekali.", Color.White)    }
+}
+
+@Composable
+fun TableRow(value: String, description: String, backgroundColor: Color) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(backgroundColor)
+            .border(1.dp, Color.Black)
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = value,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 8.dp)
+        )
+
+        Text(
+            text = description,
+            modifier = Modifier
+                .weight(4f)
+                .padding(start = 8.dp)
+        )
     }
 }
 
@@ -122,7 +187,7 @@ fun QuestionItem(question: Question, onAnswerSelected: (Int) -> Unit) {
                 textAlign = TextAlign.Center,
                 fontFamily = PoppinsFontFamily,
                 fontSize = 18.sp,
-                fontWeight = FontWeight(600),
+                fontWeight = FontWeight(500),
                 color = Color.Black
             )
             Spacer(

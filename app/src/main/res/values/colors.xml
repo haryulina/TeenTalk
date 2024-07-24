@@ -10,5 +10,11 @@
     <color name="kuning">#FFC100</color>
     <color name="dongker">#3468C0</color>
     <color name="grey">#959494</color>
+    <color name="biru">#BBE9FF</color>
+    <color name="hijau">#95D2B3</color>
+    <color name="kuning_muda">#FCDC94</color>
+    <color name="merah">#D37676</color>
+    <color name="putih">#F6F5F2</color>
+
 
 </resources>

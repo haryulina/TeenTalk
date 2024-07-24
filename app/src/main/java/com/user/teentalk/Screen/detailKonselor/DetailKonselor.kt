@@ -68,7 +68,7 @@ fun DetailKonselorScreen(
             TopAppBar(
                 title = {
                     Text(
-                        "Counselor Details",
+                        "Detail Konselor",
                         fontFamily = PoppinsFontFamily,
                         fontWeight = FontWeight(700)
                     )
