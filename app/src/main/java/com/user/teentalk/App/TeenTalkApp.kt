@@ -2,6 +2,8 @@ package com.user.teentalk.App
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -9,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.google.firebase.auth.FirebaseAuth
 import com.user.teentalk.Navigation.Screen
 import com.user.teentalk.Screen.Chat.ChatScreen
 import com.user.teentalk.Screen.Chat.ChatSiswaScreen
@@ -44,6 +47,8 @@ fun TeenTalkApp(
     LaunchedEffect(key1 = true) {
         dashboardViewModel.checkForActiveSession()
     }
+
+    val userRole by dashboardViewModel.userRole.collectAsState(initial = "")
 
     NavHost(
         navController = navController,
@@ -144,13 +149,15 @@ fun TeenTalkApp(
             )
         }
         composable(Screen.Result.route) {
-            ResultScreen(viewModel = kuesionerViewModel, resultViewModel = resultViewModel, navController = navController)
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            val studentName = currentUser?.displayName ?: "Unknown"
+            ResultScreen(viewModel = kuesionerViewModel, resultViewModel = resultViewModel, navController = navController, studentName = studentName)
         }
 
-        composable(Screen.History.route){
-            HistoryScreen(resultViewModel = resultViewModel)
+        composable(Screen.History.route) {
+            userRole?.let { it1 -> HistoryScreen(resultViewModel = resultViewModel, userRole = it1) }
         }
-        composable(Screen.Biodata.route){
+        composable(Screen.Biodata.route) {
             IsiBiodataScreen(onBackClicked = { navController.popBackStack() })
         }
         composable("detail_konselor") {
@@ -164,8 +171,8 @@ fun TeenTalkApp(
                 navController= navController
             )
         }
-        composable(Screen.Chat_History.route){
-            ChatHistoryScreen(navController = navController,onBackClicked = { navController.popBackStack() },)
+        composable(Screen.Chat_History.route) {
+            ChatHistoryScreen(navController = navController, onBackClicked = { navController.popBackStack() })
         }
     }
 }

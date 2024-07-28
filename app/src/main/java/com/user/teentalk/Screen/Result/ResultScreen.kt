@@ -45,18 +45,20 @@ import com.user.teentalk.ui.theme.PoppinsFontFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ResultScreen(viewModel: KuesionerViewModel, resultViewModel: ResultViewModel, navController: NavController) {
+fun ResultScreen(
+    viewModel: KuesionerViewModel,
+    resultViewModel: ResultViewModel,
+    navController: NavController,
+    studentName: String
+) {
     val scores by viewModel.scores.collectAsState()
     val results = viewModel.getResultCategory(scores)
 
     LaunchedEffect(scores) {
         if (scores.isNotEmpty()) {
-            resultViewModel.saveResults(scores, results)
+            resultViewModel.saveResults(scores, results, studentName)
         }
     }
-
-//    Log.d("ResultScreen", "Scores: $scores")
-//    Log.d("ResultScreen", "Results: $results")
 
     Scaffold(
         topBar = {
@@ -96,6 +98,7 @@ fun ResultScreen(viewModel: KuesionerViewModel, resultViewModel: ResultViewModel
         }
     }
 }
+
 
 @Composable
 fun ResultCard(categoryName: String, score: Int, result: String) {

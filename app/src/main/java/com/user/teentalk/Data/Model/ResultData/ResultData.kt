@@ -8,7 +8,8 @@ data class ResultData(
     val category: String,
     val score: Int,
     val result: String,
-    val timestamp: Long
+    val timestamp: Long,
+    val studentName: String? = null
 ) {
     val formattedDate: String
         get() {

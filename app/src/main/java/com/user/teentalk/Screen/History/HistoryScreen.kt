@@ -24,15 +24,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.user.teentalk.Data.Model.ResultData.ResultData
+import com.user.teentalk.ViewModel.DashboardViewModel
 import com.user.teentalk.ViewModel.ResultViewModel
 
 @Composable
-fun HistoryScreen(resultViewModel: ResultViewModel) {
+fun HistoryScreen(resultViewModel: ResultViewModel, userRole: String) {
     val historyResults by resultViewModel.historyResults.collectAsState()
 
     LaunchedEffect(Unit) {
-        resultViewModel.fetchHistoryResults()
+        if (userRole == "Konselor") {
+            resultViewModel.fetchAllStudentsHistoryResults()
+        } else {
+            resultViewModel.fetchHistoryResults()
+        }
     }
 
     val groupedResults = historyResults.groupBy { it.formattedDate }
@@ -50,7 +56,7 @@ fun HistoryScreen(resultViewModel: ResultViewModel) {
             ) {
                 groupedResults.forEach { (date, results) ->
                     item {
-                        HistoryCard(date, results)
+                        HistoryCard(date, results, userRole)
                     }
                 }
             }
@@ -66,7 +72,7 @@ fun HistoryScreen(resultViewModel: ResultViewModel) {
 
 
 @Composable
-fun HistoryCard(date: String, results: List<ResultData>) {
+fun HistoryCard(date: String, results: List<ResultData>, userRole: String) {
     Card(
         shape = RoundedCornerShape(16.dp),
         elevation = 8.dp,
@@ -78,11 +84,19 @@ fun HistoryCard(date: String, results: List<ResultData>) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
+            if (userRole == "Konselor") {
+                Text(
+                    text = "Nama Siswa: ${results.firstOrNull()?.studentName ?: "Unknown"}",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.Black,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
             results.forEach { result ->
                 HistoryItem(result)
                 Spacer(modifier = Modifier.height(8.dp))
             }
-
             Text(
                 text = "Tanggal: $date",
                 fontSize = 18.sp,
@@ -120,5 +134,7 @@ fun HistoryItem(result: ResultData) {
         )
     }
 }
+
+
 
 

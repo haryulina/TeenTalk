@@ -26,6 +26,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -39,10 +41,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.user.teentalk.Navigation.Screen
 import com.user.teentalk.R
+import com.user.teentalk.ViewModel.DashboardViewModel
 import com.user.teentalk.ui.theme.PoppinsFontFamily
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -50,8 +54,11 @@ import com.user.teentalk.ui.theme.PoppinsFontFamily
 @Composable
 fun KuesionerScreen(
     onBackClicked: () -> Unit,
-    navController: NavHostController
+    navController: NavHostController,
+    dashboardViewModel: DashboardViewModel = viewModel()
 ) {
+    val userRole by dashboardViewModel.userRole.collectAsState()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -90,7 +97,6 @@ fun KuesionerScreen(
                         .height(500.dp)
                         .background(
                             colorResource(id = R.color.dongker),
-
                             shape = RoundedCornerShape(
                                 bottomEnd = 25.dp,
                                 bottomStart = 25.dp
@@ -115,7 +121,7 @@ fun KuesionerScreen(
                         )
                         Spacer(modifier = Modifier.weight(0.2f))
                         Text(
-                            text = "Pengisian Kuesioner DASS",
+                            text = if (userRole == "Konselor") "Riwayat Pengisian Kuesioner DASS Siswa" else "Pengisian Kuesioner DASS",
                             fontSize = 25.sp,
                             textAlign = TextAlign.Center,
                             fontFamily = PoppinsFontFamily,
@@ -125,7 +131,7 @@ fun KuesionerScreen(
                         Spacer(modifier = Modifier.weight(0.2f))
 
                         Text(
-                            text =  "Depression Anxienty Stress Scale",
+                            text = "Depression Anxienty Stress Scale",
                             fontSize = 18.sp,
                             textAlign = TextAlign.Center,
                             fontFamily = PoppinsFontFamily,
@@ -145,41 +151,40 @@ fun KuesionerScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(25.dp)
-
-                )
-                {
-                    Button(
-                        onClick = {
-                            navController.navigate("kuesionerlist_screen")
-                        },
-                        shape = RoundedCornerShape(30.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            colorResource(id = R.color.dongker)
-                        ),
-                        modifier = Modifier
-                            .height(75.dp)
-                            .width(300.dp)
-                            .padding(
-                                top = 25.dp,
-                                start = 20.dp,
-                                end = 20.dp
-                            )
-                            .clickable {
-                                navController.navigate(Screen.KuesionerList.route)
+                ) {
+                    if (userRole != "Konselor") {
+                        Button(
+                            onClick = {
+                                navController.navigate("kuesionerlist_screen")
                             },
-
+                            shape = RoundedCornerShape(30.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                colorResource(id = R.color.dongker)
+                            ),
+                            modifier = Modifier
+                                .height(75.dp)
+                                .width(300.dp)
+                                .padding(
+                                    top = 25.dp,
+                                    start = 20.dp,
+                                    end = 20.dp
+                                )
+                                .clickable {
+                                    navController.navigate(Screen.KuesionerList.route)
+                                },
                         ) {
-                        Text(text = "Mulai Sekarang",
-                            Modifier.shadow(10.dp),
-                            style = TextStyle(
-                                fontSize = 18.sp,
-                                fontFamily = PoppinsFontFamily,
-                                fontWeight = FontWeight(500),
-                                color = Color.White
+                            Text(
+                                text = "Mulai Sekarang",
+                                Modifier.shadow(10.dp),
+                                style = TextStyle(
+                                    fontSize = 18.sp,
+                                    fontFamily = PoppinsFontFamily,
+                                    fontWeight = FontWeight(500),
+                                    color = Color.White
+                                )
                             )
-                        )
+                        }
                     }
-
 
                     Button(
                         onClick = {
@@ -200,9 +205,9 @@ fun KuesionerScreen(
                             .clickable {
                                 navController.navigate(Screen.History.route)
                             },
-
-                        ) {
-                        Text(text = "Lihat Riwayat",
+                    ) {
+                        Text(
+                            text = "Lihat Riwayat",
                             Modifier.shadow(10.dp),
                             style = TextStyle(
                                 fontSize = 18.sp,
@@ -212,11 +217,11 @@ fun KuesionerScreen(
                             )
                         )
                     }
-
                 }
             }
         }
     }
 }
+
 
 
