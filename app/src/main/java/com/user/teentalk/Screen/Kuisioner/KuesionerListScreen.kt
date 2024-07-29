@@ -49,6 +49,9 @@ fun KuesionerListScreen(
     val questions by viewModel.questions.collectAsState()
     var errorMessage by remember { mutableStateOf<String?>(null) }
     val context = LocalContext.current
+    val itemsPerPage = 10
+    var currentPage by remember { mutableStateOf(0) }
+    val currentPageQuestions = questions.drop(currentPage * itemsPerPage).take(itemsPerPage)
 
     Column(
         modifier = Modifier
@@ -104,7 +107,7 @@ fun KuesionerListScreen(
                 }
             }
 
-            items(questions) { question ->
+            items(currentPageQuestions) { question ->
                 QuestionItem(question = question) { answer ->
                     viewModel.updateAnswer(question.id, answer)
                 }
@@ -113,26 +116,51 @@ fun KuesionerListScreen(
             item {
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Button(
-                    onClick = {
-                        val allQuestionsAnswered = questions.all { it.answer != -1 }
-                        if (allQuestionsAnswered) {
-                            viewModel.calculateScores()
-                            viewModel.resetAnswers()
-                            navController.navigate(Screen.Result.route)
-                        } else {
-                            errorMessage = "Jawaban harus di isi semua atau tidak boleh kosong"
-                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-                        }
-                    },
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                if (currentPage == (questions.size / itemsPerPage)) {
+                    Button(
+                        onClick = {
+                            val allQuestionsAnswered = questions.all { it.answer != -1 }
+                            if (allQuestionsAnswered) {
+                                viewModel.calculateScores()
+                                viewModel.resetAnswers()
+                                navController.navigate(Screen.Result.route)
+                            } else {
+                                errorMessage = "Jawaban harus di isi semua atau tidak boleh kosong"
+                                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    ) {
+                        Text("Selesai")
+                    }
+                }
+            }
+
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Selesai")
+                    if (currentPage > 0) {
+                        Button(onClick = { currentPage-- }) {
+                            Text("Previous")
+                        }
+                    }
+                    val pageNotFilled = currentPageQuestions.any { it.answer == -1 }
+                    if ((currentPage + 1) * itemsPerPage < questions.size) {
+                        Button(
+                            onClick = { currentPage++ },
+                            enabled = !pageNotFilled
+                        ) {
+                            Text("Next")
+                        }
+                    }
                 }
             }
         }
     }
 }
+
 @Composable
 fun LikertScaleTable() {
     Column(
@@ -143,7 +171,8 @@ fun LikertScaleTable() {
         TableRow("0", "Tidak sesuai dengan saya sama sekali, atau tidak pernah.", Color(0xFFF0F0F0))
         TableRow("1", "Sesuai dengan saya sampai tingkat tertentu, atau kadang-kadang.", Color.White)
         TableRow("2", "Sesuai dengan saya sampai batas yang dapat dipertimbangkan, atau lumayan sering.", Color(0xFFF0F0F0))
-        TableRow("3", "Sangat sesuai dengan saya, atau sering sekali.", Color.White)    }
+        TableRow("3", "Sangat sesuai dengan saya, atau sering sekali.", Color.White)
+    }
 }
 
 @Composable
@@ -191,23 +220,33 @@ fun QuestionItem(question: Question, onAnswerSelected: (Int) -> Unit) {
                 color = Color.Black
             )
             Spacer(
-                modifier = Modifier
-                    .height(8.dp)
+                modifier = Modifier.height(8.dp)
             )
             Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 (0..3).forEach { answer ->
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    ) {
                         RadioButton(
                             selected = question.answer == answer,
                             onClick = { onAnswerSelected(answer) }
                         )
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = "$answer")
+                        Text(
+                            text = "$answer",
+                            fontSize = 18.sp,
+                            fontFamily = PoppinsFontFamily,
+                        )
                     }
                 }
             }
         }
     }
 }
+

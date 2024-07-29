@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -72,75 +75,84 @@ fun IsiBiodataScreen(
             )
         },
         content = { padding ->
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
                     .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "Isi Biodata Anda",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontFamily = PoppinsFontFamily,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
+                item {
+                    Text(
+                        text = "Isi Biodata Anda",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontFamily = PoppinsFontFamily,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+                }
 
-                OutlinedTextField(
-                    value = name,
-                    onValueChange = { viewModel.onNameChange(it) },
-                    label = { Text("Name") },
-                    modifier = Modifier.fillMaxWidth()
-                )
+                item {
+                    OutlinedTextField(
+                        value = name,
+                        onValueChange = { viewModel.onNameChange(it) },
+                        label = { Text("Name") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                item { Spacer(modifier = Modifier.height(16.dp)) }
 
-                OutlinedTextField(
-                    value = age,
-                    onValueChange = { viewModel.onAgeChange(it) },
-                    label = { Text("Age") },
-                    modifier = Modifier.fillMaxWidth()
-                )
+                item {
+                    OutlinedTextField(
+                        value = age,
+                        onValueChange = { viewModel.onAgeChange(it) },
+                        label = { Text("Age") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                item { Spacer(modifier = Modifier.height(16.dp)) }
 
-                OutlinedTextField(
-                    value = address,
-                    onValueChange = { viewModel.onAddressChange(it) },
-                    label = { Text("Address") },
-                    modifier = Modifier.fillMaxWidth()
-                )
+                item {
+                    OutlinedTextField(
+                        value = address,
+                        onValueChange = { viewModel.onAddressChange(it) },
+                        label = { Text("Address") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                item { Spacer(modifier = Modifier.height(16.dp)) }
 
-                OutlinedTextField(
-                    value = description,
-                    onValueChange = { viewModel.onDescriptionChange(it) },
-                    label = { Text("Description") },
-                    modifier = Modifier.fillMaxWidth()
-                )
+                item {
+                    OutlinedTextField(
+                        value = description,
+                        onValueChange = { viewModel.onDescriptionChange(it) },
+                        label = { Text("Description") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
 
-                Spacer(modifier = Modifier.height(32.dp))
+                item { Spacer(modifier = Modifier.height(32.dp)) }
 
-                Button(
-                    onClick = {
-                        viewModel.saveBiodata(
-                            onSuccess = {
-                                Toast.makeText(context, "Biodata berhasil disimpan", Toast.LENGTH_SHORT).show()
-                            },
-                            onError = { errorMessage ->
-                                Toast.makeText(context, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
-                            }
-                        )
-                    },
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    colors = ButtonDefaults.buttonColors(colorResource(id = R.color.dongker)),
-                ) {
-                    Text("Save Biodata")
+                item {
+                    Button(
+                        onClick = {
+                            viewModel.saveBiodata(
+                                onSuccess = {
+                                    Toast.makeText(context, "Biodata berhasil disimpan", Toast.LENGTH_SHORT).show()
+                                },
+                                onError = { errorMessage ->
+                                    Toast.makeText(context, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
+                                }
+                            )
+                        },
+                        colors = ButtonDefaults.buttonColors(colorResource(id = R.color.dongker)),
+                    ) {
+                        Text("Save Biodata")
+                    }
                 }
             }
         }
     )
 }
-

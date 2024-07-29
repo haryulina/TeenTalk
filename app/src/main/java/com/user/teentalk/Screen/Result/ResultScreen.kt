@@ -103,10 +103,10 @@ fun ResultScreen(
 @Composable
 fun ResultCard(categoryName: String, score: Int, result: String) {
     val color = when (result) {
-        "Normal" -> colorResource(id = com.user.teentalk.R.color.putih)
+        "Normal" -> colorResource(id = com.user.teentalk.R.color.hijau)
         "Ringan" -> colorResource(id = com.user.teentalk.R.color.biru)
-        "Sedang" -> colorResource(id = com.user.teentalk.R.color.hijau)
-        "Berat" -> colorResource(id = com.user.teentalk.R.color.kuning_muda)
+        "Sedang" -> colorResource(id = com.user.teentalk.R.color.kuning_muda)
+        "Berat" -> colorResource(id = com.user.teentalk.R.color.jingga)
         "Sangat Berat" -> colorResource(id = com.user.teentalk.R.color.merah)
         else -> Color.Gray
     }
