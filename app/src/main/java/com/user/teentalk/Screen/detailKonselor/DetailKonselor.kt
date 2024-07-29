@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -94,9 +96,9 @@ fun DetailKonselorScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .padding(16.dp),
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState()), // Make content scrollable
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center // Center the content vertically
             ) {
                 Card(
                     shape = RoundedCornerShape(16.dp),
@@ -191,6 +193,8 @@ fun DetailKonselorScreen(
                             textAlign = TextAlign.Center // Center the text
                         )
 
+                        Spacer(modifier = Modifier.height(24.dp))
+
                         Button(
                             onClick = {
                                 navController.navigate(Screen.Chat.createRoute(it.email)) // Perbarui rute navigasi
@@ -200,9 +204,8 @@ fun DetailKonselorScreen(
                                 colorResource(id = R.color.dongker)
                             ),
                             modifier = Modifier
-                                .height(75.dp)
-                                .width(300.dp)
-                                .padding(top = 25.dp, start = 20.dp, end = 20.dp)
+                                .height(50.dp)
+                                .fillMaxWidth()
                         ) {
                             Text(
                                 text = "Chat Sekarang",
